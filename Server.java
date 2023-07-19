@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,13 +12,16 @@ public class Server {
     }
     
     public void start() throws IOException{
-        try (ServerSocket ServerSocket = new ServerSocket(port)) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server started on the port" + port);
 
             while (true) {
-                Socket clienSocket = ServerSocket.accept();
-                System.out.println("Client connected from" + clienSocket.getRemoteSocketAddress());
-                //add seperate thread for each connection
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected from" + clientSocket.getRemoteSocketAddress());
+                //Create a new thread for each client connection
+                Thread clientThread = new Thread(new ClientHandler(clientSocket));
+                clientThread.start();
+
             }
         }
     }
