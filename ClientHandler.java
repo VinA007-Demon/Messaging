@@ -14,10 +14,10 @@ public class ClientHandler implements Runnable{
 
     @Override
     public void run(){
-        try {
+        try 
             // Set up input and output streams for the client connection
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+            (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
 
             //Handle client requests
             String inputLine;
@@ -26,13 +26,17 @@ public class ClientHandler implements Runnable{
                 String response = "Server response: " + inputLine;
                 out.println(response);
             }
-
-            //Close the stream and socket when done
-            in.close();
-            out.close();
-            clientSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("A client has disconnected: " + clientSocket.getRemoteSocketAddress());
+        } finally {
+            try {
+                if (clientSocket != null){
+                    clientSocket.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error when closing the client socket: " + clientSocket.getRemoteSocketAddress());
+                e.printStackTrace();
+            }
         }
     }
 }
